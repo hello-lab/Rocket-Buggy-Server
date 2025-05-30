@@ -28,7 +28,7 @@ const io = new Server(server, {
 });
 
 const players = {};
-var sphereOwner=""
+this.sphereOwner=""
 /**
  * Handle new socket connections
  */
@@ -49,7 +49,7 @@ io.on('connection', (socket) => {
   socket.on('claimSphere', (data) => {
     
     console.log(`${data.id} claimed sphere ownership`);
-    sphereOwner = data.id;  // keep track of current owner
+    this.sphereOwner = data.id;  // keep track of current owner
 
     // Notify all clients about new owner
     
@@ -58,8 +58,8 @@ io.on('connection', (socket) => {
   
   
 socket.on('spherePositionUpdate', (data) => {
-  console.log(data.id)
-  if (data.id==sphereOwner)
+  console.log(data.id,this.sphereOwner)
+  if (data.id==this.sphereOwner)
    {console.log("hey",data)
      socket.broadcast.emit('updateSphere', data);}
 });
