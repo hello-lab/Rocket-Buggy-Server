@@ -57,10 +57,11 @@ io.on('connection', (socket) => {
 });
 
 
-   socket.on('goal', (data) => {
-    if (data=="Orange")
+   socket.on('Goal', (data) => {
+      console.log(this.goalo,this.goalb,data)
+    if (data.name=="Orange")
       this.goalo+=1
-    else if (data=="Blue")
+    else if (data.name=="Blue")
      this.goalb+=1  // keep track of current owner
      console.log(this.goalo,this.goalb)
  socket.broadcast.emit('scoreupdate', {o:this.goalo,b:this.goalb})
