@@ -14,6 +14,8 @@ class Player {
 }
 
 const server = http.createServer();
+this.scoreb=""
+this.scoreo=""
 
 // Configure Socket.IO with CORS
 const io = new Server(server, {
@@ -54,6 +56,17 @@ io.on('connection', (socket) => {
     
 });
 
+
+   socket.on('goal', (data) => {
+    if (data=="Orange")
+      this.goalo+=1
+    else if (data=="Blue")
+     this.goalb+=1  // keep track of current owner
+ socket.broadcast.emit('scoreupdate', {o:this.goalo,b:this.goalb})
+    // Notify all clients about new owner
+    
+});
+  
   
   
 socket.on('spherePositionUpdate', (data) => {
