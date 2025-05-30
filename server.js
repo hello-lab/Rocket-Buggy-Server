@@ -1,119 +1,96 @@
-/**
- * This is the main Node.js server script for your project
- * Check out the two endpoints this back-end API provides in fastify.get and fastify.post below
+const http = require('http');
+const { Server } = require('socket.io');
+
+/** 
+ * Class to track each connected player (id + position)
  */
-
-const path = require("path");
-
-// Require the fastify framework and instantiate it
-const fastify = require("fastify")({
-  // Set this to true for detailed logging:
-  logger: false,
-});
-
-// ADD FAVORITES ARRAY VARIABLE FROM TODO HERE
-
-// Setup our static files
-fastify.register(require("@fastify/static"), {
-  root: path.join(__dirname, "public"),
-  prefix: "/", // optional: default '/'
-});
-
-// Formbody lets us parse incoming forms
-fastify.register(require("@fastify/formbody"));
-
-// View is a templating manager for fastify
-fastify.register(require("@fastify/view"), {
-  engine: {
-    handlebars: require("handlebars"),
-  },
-});
-
-// Load and parse SEO data
-const seo = require("./src/seo.json");
-if (seo.url === "glitch-default") {
-  seo.url = `https://${process.env.PROJECT_DOMAIN}.glitch.me`;
+class Player {
+    constructor(id) {
+        this.id = id;
+        this.x = 0;
+        this.y = 0;
+        this.z = 0;
+    }
 }
 
-/**
- * Our home page route
- *
- * Returns src/pages/index.hbs with data built into it
- */
-fastify.get("/", function (request, reply) {
-  // params is an object we'll pass to our handlebars template
-  let params = { seo: seo };
+const server = http.createServer();
 
-  // If someone clicked the option for a random color it'll be passed in the querystring
-  if (request.query.randomize) {
-    // We need to load our color data file, pick one at random, and add it to the params
-    const colors = require("./src/colors.json");
-    const allColors = Object.keys(colors);
-    let currentColor = allColors[(allColors.length * Math.random()) << 0];
+// Configure Socket.IO with CORS
+const io = new Server(server, {
+    cors: {
+        // If you only want to allow PlayCanvas launch domain:
+        // origin: "https://launch.playcanvas.com",
 
-    // Add the color properties to the params object
-    params = {
-      color: colors[currentColor],
-      colorError: null,
-      seo: seo,
-    };
-  }
-
-  // The Handlebars code will be able to access the parameter values and build them into the page
-  return reply.view("/src/pages/index.hbs", params);
+        // Or allow all origins (less secure, but quick for testing)
+        origin: "*",
+        methods: ["GET", "POST"]
+    }
 });
 
+const players = {};
+var sphereOwner=""
 /**
- * Our POST route to handle and react to form submissions
- *
- * Accepts body data indicating the user choice
+ * Handle new socket connections
  */
-fastify.post("/", function (request, reply) {
-  // Build the params object to pass to the template
-  let params = { seo: seo };
+io.on('connection', (socket) => {
+    console.log(`New client connected: ${socket.id}`);
 
-  // If the user submitted a color through the form it'll be passed here in the request body
-  let color = request.body.color;
+    // Fired when the client is ready to initialize their Player object
+    socket.on('initialize', () => {
+        const newPlayer = new Player(socket.id);
+        players[socket.id] = newPlayer;
 
-  // If it's not empty, let's try to find the color
-  if (color) {
-    // ADD CODE FROM TODO HERE TO SAVE SUBMITTED FAVORITES
+        // Send to this client its own ID and the current list of players
+        socket.emit('playerData', { id: socket.id, players });
 
-    // Load our color data file
-    const colors = require("./src/colors.json");
+        // Tell everyone else about this new player
+        socket.broadcast.emit('playerJoined', newPlayer);
+    });
+  socket.on('claimSphere', (data) => {
+    
+    console.log(`${data.id} claimed sphere ownership`);
+    sphereOwner = data.id;  // keep track of current owner
 
-    // Take our form submission, remove whitespace, and convert to lowercase
-    color = color.toLowerCase().replace(/\s/g, "");
-
-    // Now we see if that color is a key in our colors object
-    if (colors[color]) {
-      // Found one!
-      params = {
-        color: colors[color],
-        colorError: null,
-        seo: seo,
-      };
-    } else {
-      // No luck! Return the user value as the error property
-      params = {
-        colorError: request.body.color,
-        seo: seo,
-      };
-    }
-  }
-
-  // The Handlebars template will use the parameter values to update the page with the chosen color
-  return reply.view("/src/pages/index.hbs", params);
+    // Notify all clients about new owner
+    
 });
 
-// Run the server and report out to the logs
-fastify.listen(
-  { port: process.env.PORT, host: "0.0.0.0" },
-  function (err, address) {
-    if (err) {
-      console.error(err);
-      process.exit(1);
-    }
-    console.log(`Your app is listening on ${address}`);
-  }
-);
+  
+  
+socket.on('spherePositionUpdate', (data) => {
+  console.log(data.id)
+  if (data.id==sphereOwner)
+   {console.log("hey",data)
+     socket.broadcast.emit('updateSphere', data);}
+});
+    // Update player position
+    socket.on('positionUpdate', (data) => {
+        if (!players[socket.id]) return;
+        players[socket.id].x = data.x;
+        players[socket.id].y = data.y;
+        players[socket.id].z = data.z;
+//console.log(data)
+        // Broadcast updated position to all other players
+        socket.broadcast.emit('playerMoved', {
+            id: socket.id,
+            x: data.x,
+            y: data.y,
+            z: data.z,
+          face:data.face
+        });
+    });
+
+    // Handle disconnections
+    socket.on('disconnect', () => {
+        console.log(`Client disconnected: ${socket.id}`);
+        if (!players[socket.id]) return;
+        delete players[socket.id];
+        // Notify other players to remove this player
+        socket.broadcast.emit('killPlayer', socket.id);
+    });
+});
+
+const PORT = process.env.PORT || 3000;
+server.listen(PORT, () => {
+    console.log(`Server started on port ${PORT}`);
+});
