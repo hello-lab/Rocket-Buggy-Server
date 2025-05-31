@@ -57,9 +57,10 @@ io.on('connection', (socket) => {
         socket.broadcast.emit('playerJoined', newPlayer);
     });
   socket.on('claimSphere', (data) => {
+    //console.log("hmm")
     console.log(`${data.id} claimed sphere ownership`);
     
-    this.sphereOwner =  getPlayerNameById(data.id) // keep track of current owner
+    this.sphereOwner =  players[data.id].name // keep track of current owner
 
     // Notify all clients about new owner
     
