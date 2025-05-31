@@ -43,7 +43,8 @@ io.on('connection', (socket) => {
     socket.on('initialize', (data) => {
         const newPlayer = new Player(socket.id);
         players[socket.id] = newPlayer;
-      newPlayer.
+      newPlayer.name=data.name;
+      newPlayer.team=data.team;
         // Send to this client its own ID and the current list of players
         socket.emit('playerData', { id: socket.id, players });
 
