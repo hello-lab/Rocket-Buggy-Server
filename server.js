@@ -10,6 +10,8 @@ class Player {
         this.x = 0;
         this.y = 0;
         this.z = 0;
+      this.name="";
+      this.team="spec"
     }
 }
 
@@ -38,10 +40,10 @@ io.on('connection', (socket) => {
     console.log(`New client connected: ${socket.id}`);
 
     // Fired when the client is ready to initialize their Player object
-    socket.on('initialize', () => {
+    socket.on('initialize', (data) => {
         const newPlayer = new Player(socket.id);
         players[socket.id] = newPlayer;
-
+      newPlayer.
         // Send to this client its own ID and the current list of players
         socket.emit('playerData', { id: socket.id, players });
 
