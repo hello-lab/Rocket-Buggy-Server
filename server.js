@@ -53,7 +53,7 @@ io.on('connection', (socket) => {
     });
   socket.on('claimSphere', (data) => {
     console.log(`${data.id} claimed sphere ownership`);
-    this.sphereOwner = data.id;  // keep track of current owner
+    this.sphereOwner = data.name;  // keep track of current owner
 
     // Notify all clients about new owner
     
