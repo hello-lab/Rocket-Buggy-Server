@@ -58,18 +58,20 @@ io.on('connection', (socket) => {
 
 
    socket.on('Goal', (data) => {
-      console.log(this.goalo,this.goalb,data)
+      console.log(this.goalo,this.goalb,data,data.name)
     if (data.name=="Orange")
       this.goalo+=1
     else if (data.name=="Blue")
      this.goalb+=1  // keep track of current owner
      console.log(this.goalo,this.goalb)
  socket.broadcast.emit('scoreupdate', {o:this.goalo,b:this.goalb})
-    // Notify all clients about new owner
+    // Notify all clients about new score
     
 });
   
-  
+   socket.on('score', (data) => {
+      socket.broadcast.emit('scoreupdate', {o:this.goalo,b:this.goalb})
+   })
   
 socket.on('spherePositionUpdate', (data) => {
   //console.log(data.id,this.sphereOwner,data)
