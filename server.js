@@ -15,6 +15,11 @@ class Player {
     }
 }
 
+function getPlayerNameById(id) {
+    const player = players.find(p => p.id === id);
+    return player ? player.name : null;
+}
+
 const server = http.createServer();
 this.goalb=0
 this.goalo=0
@@ -53,7 +58,8 @@ io.on('connection', (socket) => {
     });
   socket.on('claimSphere', (data) => {
     console.log(`${data.id} claimed sphere ownership`);
-    this.sphereOwner = data.name;  // keep track of current owner
+    
+    this.sphereOwner =  getPlayerNameById(data.id) // keep track of current owner
 
     // Notify all clients about new owner
     
@@ -66,7 +72,7 @@ io.on('connection', (socket) => {
       this.goalo+=1
     else if (data.name=="Blue")
      this.goalb+=1  // keep track of current owner
-     console.log(this.goalo,this.goalb)
+     console.log(this.goalo,this.goalb,this.sphereOwner)
  io.emit('scoreupdate', {o:this.goalo,b:this.goalb,scorer:this.sphereOwner})
     // Notify all clients about new score
     
@@ -74,7 +80,7 @@ io.on('connection', (socket) => {
   
    socket.on('score', (data) => {
      console.log('fuke')
-      io.emit('scoreupdate', {o:this.goalo,b:this.goalb})
+      io.emit('scoreupdate', {o:this.goalo,b:this.goalb,scorer:this.sphereOwner})
    })
   
 socket.on('spherePositionUpdate', (data) => {
