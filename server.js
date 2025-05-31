@@ -64,13 +64,14 @@ io.on('connection', (socket) => {
     else if (data.name=="Blue")
      this.goalb+=1  // keep track of current owner
      console.log(this.goalo,this.goalb)
- socket.broadcast.emit('scoreupdate', {o:this.goalo,b:this.goalb})
+ io.emit('scoreupdate', {o:this.goalo,b:this.goalb,scorer:this.sphereOwner})
     // Notify all clients about new score
     
 });
   
    socket.on('score', (data) => {
-      socket.broadcast.emit('scoreupdate', {o:this.goalo,b:this.goalb})
+     console.log('fuke')
+      io.emit('scoreupdate', {o:this.goalo,b:this.goalb})
    })
   
 socket.on('spherePositionUpdate', (data) => {
