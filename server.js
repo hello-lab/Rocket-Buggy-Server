@@ -1,5 +1,23 @@
+//old nod v fix for glitch.com
+if (!Object.hasOwn) {
+  Object.hasOwn = function(obj, prop) {
+    return Object.prototype.hasOwnProperty.call(obj, prop);
+  };
+}
+
+
+
 const http = require('http');
 const { Server } = require('socket.io');
+
+const express = require('express');
+const app = express();
+const httpServer = http.createServer(app);
+
+app.use(express.static('public'));
+
+httpServer.listen(3000, () => console.log('Server running on 3000'));
+
 
 /** 
  * Class to track each connected player (id + position)
@@ -25,7 +43,7 @@ this.goalb=0
 this.goalo=0
 
 // Configure Socket.IO with CORS
-const io = new Server(server, {
+const io = new Server(app, {
     cors: {
         // If you only want to allow PlayCanvas launch domain:
         // origin: "https://launch.playcanvas.com",
@@ -53,6 +71,9 @@ io.on('connection', (socket) => {
       newPlayer.name=data.name;
       newPlayer.team=data.team;
       if (data.team=="Orange")
+        orange[socket.id]= newPlayer;
+      else  if (data.team=="Blue")
+        blue[socket.id]= newPlayer;
         // Send to this client its own ID and the current list of players
         socket.emit('playerData', { id: socket.id, players });
 
