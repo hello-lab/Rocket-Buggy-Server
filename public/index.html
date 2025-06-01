@@ -66,7 +66,8 @@
 </head>
 <body>
   <h1>⚽ Live Player Manager</h1>
-  <div id="score">Total Goals: 0</div>
+  <div id="score"><strong style="color:orange">Orange:</strong> 0&nbsp;&nbsp;
+    <strong>Blue:</strong>0 <br></div>
   <ul id="players"></ul>
 
   <script>
@@ -77,11 +78,12 @@
     document.body.onload = () => {
       console.log('web');
       socket.emit("web");
+      socket.emit("score")
     };
 
     socket.on('playerData', (data) => {
       renderPlayers(data.players);
-      updateScore(data.players);
+      //updateScore(data.players);
     });
 
     socket.on('playerUpdated', (data) => {
@@ -137,13 +139,14 @@
       socket.emit('removePlayer', { id });
     }
 
-    function updateScore(players) {
-      let totalGoals = 0;
-      for (let id in players) {
-        totalGoals += parseInt(players[id].goals);
-      }
-      scoreEl.innerText = `Total Goals: ${totalGoals}`;
-    }
+    socket.on("scoreupdate", (data) => {
+  // Display scores for both teams
+  scoreEl.innerHTML = `
+    <strong style="color:orange;">Orange:</strong> ${data.o} &nbsp;&nbsp;
+    <strong>Blue:</strong> ${data.b} <br>
+    <small>Last scorer: ${data.scorer || "N/A"}</small>
+  `;
+});
   </script>
 </body>
 </html>
