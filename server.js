@@ -132,7 +132,10 @@ io.on("connection", (socket) => {
       face: data.face,
     });
   });
-
+  socket.on("relevel", () => {
+    socket.broadcast.emit("scoreupdate")
+    
+  })
   // Handle disconnections
   socket.on("disconnect", () => {
     console.log(`Client disconnected: ${socket.id}`);
