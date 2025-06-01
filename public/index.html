@@ -2,76 +2,52 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Multiplayer Game Dashboard</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- Socket.io client -->
+  <title>Live Player Editor</title>
   <script src="/socket.io/socket.io.js"></script>
   <style>
-    body {
-      background: #121212;
-      color: #fff;
-      font-family: sans-serif;
-      padding: 20px;
-    }
-    h1 {
-      margin-bottom: 10px;
-      font-size: 2rem;
-    }
-    .score {
-      font-size: 1.5rem;
-      margin: 10px 0;
-    }
-    ul {
-      padding: 0;
-      list-style: none;
-    }
-    li {
-      padding: 4px 0;
-    }
+    body { background: #111; color: #fff; font-family: sans-serif; }
+    ul { list-style: none; padding: 0; }
+    li { margin-bottom: 10px; background: #222; padding: 10px; border-radius: 6px; }
+    input { margin: 2px; }
   </style>
 </head>
 <body>
-  <h1>⚽ Game Live Dashboard</h1>
-  <div class="score" id="score">Orange 0 - 0 Blue</div>
-
-  <h2>Connected Players</h2>
+  <h1>⚽ Live Player Manager</h1>
   <ul id="players"></ul>
 
   <script>
     const socket = io();
-
-    const scoreEl = document.getElementById('score');
     const playersEl = document.getElementById('players');
 
-    socket.on('scoreupdate', (data) => {
-      scoreEl.textContent = `Orange ${data.o} - ${data.b} Blue`;
-    });
-
     socket.on('playerData', (data) => {
-      updatePlayers(data.players);
+      renderPlayers(data.players);
     });
 
-    socket.on('playerJoined', (data) => {
-      addPlayer(data);
+    socket.on('playerUpdated', (data) => {
+      const input = document.querySelector(`#${data.id}-${data.key}`);
+      if (input) input.value = data.value;
     });
 
-    socket.on('killPlayer', (id) => {
-      const el = document.getElementById(id);
-      if (el) el.remove();
-    });
-
-    function addPlayer(player) {
-      const li = document.createElement('li');
-      li.id = player.id;
-      li.textContent = `${player.name || 'Unnamed'} (${player.team || 'No Team'})`;
-      playersEl.appendChild(li);
-    }
-
-    function updatePlayers(players) {
+    function renderPlayers(players) {
       playersEl.innerHTML = '';
       for (let id in players) {
-        addPlayer(players[id]);
+        const p = players[id];
+        const li = document.createElement('li');
+        li.innerHTML = `
+          <strong>ID:</strong> ${p.id}<br>
+          Name: <input type="text" id="${p.id}-name" value="${p.name}" 
+            onchange="updatePlayer('${p.id}', 'name', this.value)"><br>
+          Team: <input type="text" id="${p.id}-team" value="${p.team}"
+            onchange="updatePlayer('${p.id}', 'team', this.value)"><br>
+          Goals: <input type="number" id="${p.id}-goals" value="${p.goals}"
+            onchange="updatePlayer('${p.id}', 'goals', this.value)">
+        `;
+        playersEl.appendChild(li);
       }
+    }
+
+    function updatePlayer(id, key, value) {
+      socket.emit('editPlayer', { id, key, value });
     }
   </script>
 </body>
