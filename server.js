@@ -22,7 +22,7 @@ httpServer.listen(3000, () => console.log("Server running on 4545"));
 class Player {
   constructor(id) {
     this.id = id;
-    this.x = 0;
+    this.x = 200;
     this.y = 0;
     this.z = 0;
     this.goals = 0;
@@ -56,7 +56,7 @@ const players = {};
 const orange = {};
 const blue = {};
 this.sphereOwner = "";
-const orangespn=[]
+
 /**
  * Handle new socket connections
  */
@@ -69,6 +69,7 @@ io.on("connection", (socket) => {
     players[socket.id] = newPlayer;
     newPlayer.name = data.name;
     newPlayer.team = data.team;
+    
     if (data.team == "Orange") orange[socket.id] = newPlayer;
     else if (data.team == "Blue") blue[socket.id] = newPlayer;
     // Send to this client its own ID and the current list of players
