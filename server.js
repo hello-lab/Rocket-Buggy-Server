@@ -37,6 +37,8 @@ const io = new Server(server, {
 });
 
 const players = {};
+const orange={}
+const blue={}
 this. sphereOwner=""
 /**
  * Handle new socket connections
@@ -50,6 +52,7 @@ io.on('connection', (socket) => {
         players[socket.id] = newPlayer;
       newPlayer.name=data.name;
       newPlayer.team=data.team;
+      if (data.team=="Orange")
         // Send to this client its own ID and the current list of players
         socket.emit('playerData', { id: socket.id, players });
 
@@ -111,6 +114,11 @@ socket.on('spherePositionUpdate', (data) => {
         console.log(`Client disconnected: ${socket.id}`);
         if (!players[socket.id]) return;
         delete players[socket.id];
+      if (!orange[socket.id]) return;
+        delete orange[socket.id];
+      if (!blue[socket.id]) return;
+        delete blue[socket.id];
+      
         // Notify other players to remove this player
         socket.broadcast.emit('killPlayer', socket.id);
     });
