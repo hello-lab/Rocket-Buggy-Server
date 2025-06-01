@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Multiplayer Game Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Socket.io client -->
+  <script src="/socket.io/socket.io.js"></script>
+  <style>
+    body {
+      background: #121212;
+      color: #fff;
+      font-family: sans-serif;
+      padding: 20px;
+    }
+    h1 {
+      margin-bottom: 10px;
+      font-size: 2rem;
+    }
+    .score {
+      font-size: 1.5rem;
+      margin: 10px 0;
+    }
+    ul {
+      padding: 0;
+      list-style: none;
+    }
+    li {
+      padding: 4px 0;
+    }
+  </style>
+</head>
+<body>
+  <h1>⚽ Game Live Dashboard</h1>
+  <div class="score" id="score">Orange 0 - 0 Blue</div>
+
+  <h2>Connected Players</h2>
+  <ul id="players"></ul>
+
+  <script>
+    const socket = io();
+
+    const scoreEl = document.getElementById('score');
+    const playersEl = document.getElementById('players');
+
+    socket.on('scoreupdate', (data) => {
+      scoreEl.textContent = `Orange ${data.o} - ${data.b} Blue`;
+    });
+
+    socket.on('playerData', (data) => {
+      updatePlayers(data.players);
+    });
+
+    socket.on('playerJoined', (data) => {
+      addPlayer(data);
+    });
+
+    socket.on('killPlayer', (id) => {
+      const el = document.getElementById(id);
+      if (el) el.remove();
+    });
+
+    function addPlayer(player) {
+      const li = document.createElement('li');
+      li.id = player.id;
+      li.textContent = `${player.name || 'Unnamed'} (${player.team || 'No Team'})`;
+      playersEl.appendChild(li);
+    }
+
+    function updatePlayers(players) {
+      playersEl.innerHTML = '';
+      for (let id in players) {
+        addPlayer(players[id]);
+      }
+    }
+  </script>
+</body>
+</html>

@@ -16,7 +16,7 @@ const httpServer = http.createServer(app);
 
 app.use(express.static('public'));
 
-httpServer.listen(3000, () => console.log('Server running on 3000'));
+httpServer.listen(3000, () => console.log('Server running on 4545'));
 
 
 /** 
@@ -43,7 +43,7 @@ this.goalb=0
 this.goalo=0
 
 // Configure Socket.IO with CORS
-const io = new Server(app, {
+const io = new Server(httpServer, {
     cors: {
         // If you only want to allow PlayCanvas launch domain:
         // origin: "https://launch.playcanvas.com",
@@ -146,6 +146,3 @@ socket.on('spherePositionUpdate', (data) => {
 });
 
 const PORT = process.env.PORT || 3000;
-server.listen(PORT, () => {
-    console.log(`Server started on port ${PORT}`);
-});
