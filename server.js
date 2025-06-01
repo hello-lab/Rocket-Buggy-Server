@@ -76,7 +76,9 @@ io.on("connection", (socket) => {
     // Tell everyone else about this new player
     socket.broadcast.emit("playerJoined", newPlayer);
   });
-  socket.on("web",)
+  socket.on("web",()=>{
+     socket.emit("playerData", { id: socket.id, players });
+  })
   
   socket.on("claimSphere", (data) => {
     //console.log("hmm")

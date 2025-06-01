@@ -2,25 +2,86 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Live Player Editor</title>
+  <title>⚽ Live Player Manager</title>
   <script src="/socket.io/socket.io.js"></script>
   <style>
-    body { background: #111; color: #fff; font-family: sans-serif; }
-    ul { list-style: none; padding: 0; }
-    li { margin-bottom: 10px; background: #222; padding: 10px; border-radius: 6px; }
-    input { margin: 2px; }
+    body {
+      background: #0d0d0d;
+      color: #f0f0f0;
+      font-family: 'Segoe UI', sans-serif;
+      margin: 20px;
+    }
+    h1 {
+      color: #ffc107;
+      font-size: 32px;
+      margin-bottom: 10px;
+    }
+    #score {
+      font-size: 20px;
+      margin-bottom: 20px;
+      padding: 10px;
+      background: #222;
+      border-radius: 6px;
+      display: inline-block;
+    }
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 15px;
+    }
+    li {
+      background: #1c1c1c;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 0 8px rgba(0,0,0,0.5);
+    }
+    input, button {
+      margin: 5px 0;
+      padding: 5px;
+      border-radius: 4px;
+      border: none;
+      outline: none;
+    }
+    input[type="text"], input[type="number"] {
+      background: #333;
+      color: #fff;
+      width: 80px;
+    }
+    button {
+      background: #333;
+      color: #eee;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    button:hover {
+      background: #444;
+    }
+    strong {
+      color: #00bcd4;
+    }
   </style>
 </head>
 <body>
   <h1>⚽ Live Player Manager</h1>
+  <div id="score">Total Goals: 0</div>
   <ul id="players"></ul>
 
   <script>
     const socket = io();
     const playersEl = document.getElementById('players');
+    const scoreEl = document.getElementById('score');
+
+    document.body.onload = () => {
+      console.log('web');
+      socket.emit("web");
+    };
 
     socket.on('playerData', (data) => {
       renderPlayers(data.players);
+      updateScore(data.players);
     });
 
     socket.on('playerUpdated', (data) => {
@@ -40,7 +101,16 @@
           Team: <input type="text" id="${p.id}-team" value="${p.team}"
             onchange="updatePlayer('${p.id}', 'team', this.value)"><br>
           Goals: <input type="number" id="${p.id}-goals" value="${p.goals}"
-            onchange="updatePlayer('${p.id}', 'goals', this.value)">
+            onchange="updatePlayer('${p.id}', 'goals', this.value)"><br>
+          X: <input type="number" id="${p.id}-x" value="${p.x}" step="0.1"
+            onchange="updatePlayer('${p.id}', 'x', parseFloat(this.value))"><br>
+          Y: <input type="number" id="${p.id}-y" value="${p.y}" step="0.1"
+            onchange="updatePlayer('${p.id}', 'y', parseFloat(this.value))"><br>
+          Z: <input type="number" id="${p.id}-z" value="${p.z}" step="0.1"
+            onchange="updatePlayer('${p.id}', 'z', parseFloat(this.value))"><br>
+          <button onclick="incrementGoal('${p.id}')">+1 Goal</button>
+          <button onclick="resetPlayer('${p.id}')">Reset Pos</button>
+          <button onclick="deletePlayer('${p.id}')">❌</button>
         `;
         playersEl.appendChild(li);
       }
@@ -48,6 +118,31 @@
 
     function updatePlayer(id, key, value) {
       socket.emit('editPlayer', { id, key, value });
+    }
+
+    function incrementGoal(id) {
+      const goalsInput = document.getElementById(`${id}-goals`);
+      const newVal = parseInt(goalsInput.value) + 1;
+      goalsInput.value = newVal;
+      updatePlayer(id, 'goals', newVal);
+    }
+
+    function resetPlayer(id) {
+      updatePlayer(id, 'x', 0);
+      updatePlayer(id, 'y', 0);
+      updatePlayer(id, 'z', 0);
+    }
+
+    function deletePlayer(id) {
+      socket.emit('removePlayer', { id });
+    }
+
+    function updateScore(players) {
+      let totalGoals = 0;
+      for (let id in players) {
+        totalGoals += parseInt(players[id].goals);
+      }
+      scoreEl.innerText = `Total Goals: ${totalGoals}`;
     }
   </script>
 </body>
