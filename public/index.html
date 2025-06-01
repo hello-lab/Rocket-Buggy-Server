@@ -71,7 +71,7 @@
   <h1>⚽ Live Player Manager</h1>
   <div id="score"><strong style="color:orange">Orange:</strong> 0&nbsp;&nbsp;
     <strong>Blue:</strong>0 <br></div>
-  <button onlclick="">
+  <button onlclick="restartlvl">
     Restart Level
   </button>
   <ul id="players"></ul>
@@ -140,7 +140,9 @@
       updatePlayer(id, 'y', 0);
       updatePlayer(id, 'z', 0);
     }
-
+function restartlvl(){
+  socket.emit("relevel")
+}
     function deletePlayer(id) {
       socket.emit('removePlayer', { id });
     }

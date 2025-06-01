@@ -133,7 +133,11 @@ io.on("connection", (socket) => {
     });
   });
   socket.on("relevel", () => {
-    socket.broadcast.emit("scoreupdate")
+    io.emit("scoreupdate", {
+      o: this.goalo,
+      b: this.goalb,
+      scorer: this.sphereOwner,
+    });
     
   })
   // Handle disconnections
