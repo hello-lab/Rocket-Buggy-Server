@@ -56,6 +56,7 @@ const players = {};
 const orange = {};
 const blue = {};
 this.sphereOwner = "";
+const orangespn=[]
 /**
  * Handle new socket connections
  */
@@ -133,10 +134,12 @@ io.on("connection", (socket) => {
     });
   });
   socket.on("relevel", () => {
+    console.log('res')
     io.emit("scoreupdate", {
       o: this.goalo,
       b: this.goalb,
       scorer: this.sphereOwner,
+      now:true
     });
     
   })
