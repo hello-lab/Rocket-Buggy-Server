@@ -88,7 +88,7 @@ io.on("connection", (socket) => {
   
   socket.on("claimSphere", (data) => {
     //console.log("hmm")
-    console.log(`${data.id} claimed sphere ownership`);
+    console.log(`${players[data.id].name} claimed sphere ownership`);
 
     this.sphereOwner = players[data.id].name; // keep track of current owner
 
@@ -119,7 +119,7 @@ io.on("connection", (socket) => {
 
   socket.on("spherePositionUpdate", (data) => {
     //console.log(data.id,this.sphereOwner,data)
-    if (data.id == this.sphereOwner)
+    if (players[data.id].name == this.sphereOwner)
       socket.broadcast.emit("updateSphere", data);
   });
   // Update player position
