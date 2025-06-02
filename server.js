@@ -90,7 +90,7 @@ io.on("connection", (socket) => {
     //console.log("hmm")
     console.log(`${players[data.id].name} claimed sphere ownership`);
 
-    this.sphereOwner = players[data.id].name; // keep track of current owner
+    this.sphereOwner = data.id; // keep track of current owner
 
     // Notify all clients about new owner
   });
@@ -103,7 +103,7 @@ io.on("connection", (socket) => {
     io.emit("scoreupdate", {
       o: this.goalo,
       b: this.goalb,
-      scorer: this.sphereOwner,
+      scorer: players[this.sphereOwner].name,
     });
     // Notify all clients about new score
   });
@@ -113,13 +113,13 @@ io.on("connection", (socket) => {
     io.emit("scoreupdate", {
       o: this.goalo,
       b: this.goalb,
-      scorer: this.sphereOwner,
+      scorer:  players[this.sphereOwner].name,
     });
   });
 
   socket.on("spherePositionUpdate", (data) => {
     //console.log(data.id,this.sphereOwner,data)
-    if (players[data.id].name == this.sphereOwner)
+    if (data.id == this.sphereOwner)
       socket.broadcast.emit("updateSphere", data);
   });
   // Update player position
