@@ -78,7 +78,7 @@ io.on("connection", (socket) => {
                                   }
     // Send to this client its own ID and the current list of players
     socket.emit("playerData", { id: socket.id, players });
-
+console.log(players)
     // Tell everyone else about this new player
     socket.broadcast.emit("playerJoined", newPlayer);
   });
@@ -96,10 +96,10 @@ io.emit('spherowner',{id:this.sphereOwner})
   });
 
   socket.on("Goal", (data) => {
-    console.log(this.goalo, this.goalb, data, data.name);
+    //console.log(this.goalo, this.goalb, data, data.name);
     if (data.name == "Orange") this.goalo += 1;
     else if (data.name == "Blue") this.goalb += 1; // keep track of current owner
-    console.log(this.goalo, this.goalb, this.sphereOwner);
+    //console.log(this.goalo, this.goalb, this.sphereOwner);
     io.emit("scoreupdate", {
       o: this.goalo,
       b: this.goalb,
@@ -109,7 +109,7 @@ io.emit('spherowner',{id:this.sphereOwner})
   });
 
   socket.on("score", (data) => {
-    console.log("fuke");
+   // console.log("fuke");
     if (this.sphereOwner)
     io.emit("scoreupdate", {
       o: this.goalo,
@@ -119,7 +119,7 @@ io.emit('spherowner',{id:this.sphereOwner})
   });
 
   socket.on("spherePositionUpdate", (data) => {
-    console.log(data.id,this.sphereOwner,data)
+    //console.log(data.id,this.sphereOwner,data)
     if (data.id == this.sphereOwner)
       socket.broadcast.emit("updateSphere", data);
   });
