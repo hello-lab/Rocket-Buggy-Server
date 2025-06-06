@@ -71,10 +71,10 @@ io.on("connection", (socket) => {
     newPlayer.team = data.team;
     
     if (data.team == "Orange") {orange[socket.id] = newPlayer;
-                               newPlayer.x=-180*(Object.keys(orange).length)
+                               newPlayer.x=-90*(Object.keys(orange).length)
                                }
     else if (data.team == "Blue") {blue[socket.id] = newPlayer;
-                                   newPlayer.x=180*(Object.keys(blue).length)
+                                   newPlayer.x=90*(Object.keys(blue).length)
                                   }
     // Send to this client its own ID and the current list of players
     socket.emit("playerData", { id: socket.id, players });
