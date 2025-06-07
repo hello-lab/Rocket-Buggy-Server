@@ -100,6 +100,7 @@ io.emit('spherowner',{id:this.sphereOwner})
     if (data.name == "Orange") this.goalo += 1;
     else if (data.name == "Blue") this.goalb += 1; // keep track of current owner
     //console.log(this.goalo, this.goalb, this.sphereOwner);
+    players[this.sphereOwner].goals=players[this.sphereOwner].goals+1
     io.emit("scoreupdate", {
       o: this.goalo,
       b: this.goalb,
