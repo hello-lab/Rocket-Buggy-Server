@@ -86,6 +86,12 @@ console.log(players)
      socket.emit("playerData", { id: socket.id, players });
   })
   
+  socket.on("timer", (data) => {
+    
+    socket.broadcast.emit("timer",{time:145})
+  })
+  
+  
   socket.on("claimSphere", (data) => {
     //console.log("hmm")
     console.log(`${players[data.id].name} claimed sphere ownership`);
