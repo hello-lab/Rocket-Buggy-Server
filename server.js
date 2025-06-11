@@ -90,7 +90,11 @@ console.log(players)
     
     socket.broadcast.emit("timer",{time:data.time})
   })
-  
+  socket.on("pause", (data) => {
+    
+    socket.broadcast.emit("pause")
+  })
+   
   
   socket.on("claimSphere", (data) => {
     //console.log("hmm")
