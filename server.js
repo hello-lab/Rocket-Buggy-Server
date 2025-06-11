@@ -88,7 +88,7 @@ console.log(players)
   
   socket.on("timer", (data) => {
     
-    socket.broadcast.emit("timer",{time:145})
+    socket.broadcast.emit("timer",{time:data.time})
   })
   
   
