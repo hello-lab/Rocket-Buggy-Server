@@ -141,7 +141,8 @@
       updatePlayer(id, 'z', 0);
     }
 function restartlvl(){
-  socket.emit("relevel")
+  console.log("noo")
+   socket.emit("timer",{time:60*5})
 }
     function deletePlayer(id) {
       socket.emit('removePlayer', { id });

@@ -116,6 +116,8 @@ io.emit('spherowner',{id:this.sphereOwner})
       b: this.goalb,
       scorer: players[this.sphereOwner].name,
     });
+    socket.broadcast.emit("pause")
+    setTimeout(()=> socket.broadcast.emit("timer",{time:0}),5000)
     // Notify all clients about new score
   });
 
