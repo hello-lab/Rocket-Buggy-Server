@@ -100,6 +100,7 @@
 
     socket.on('playerData', (data) => {
       renderPlayers(data.players);
+      console.log(data.players)
       //updateScore(data.players);
     });
 
@@ -114,18 +115,19 @@
         const p = players[id];
         const li = document.createElement('li');
         li.innerHTML = `
+        
           <strong>ID:</strong> ${p.id}<br>
-          Name: <input type="text" id="${p.id}-name" value="${p.name}" 
+          Name: <input disabled type="text" id="${p.id}-name" value="${p.name}" 
             onchange="updatePlayer('${p.id}', 'name', this.value)"><br>
-          Team: <input type="text" id="${p.id}-team" value="${p.team}"
+          Team: <input disabled type="text" id="${p.id}-team" value="${p.team}"
             onchange="updatePlayer('${p.id}', 'team', this.value)"><br>
-          Goals: <input type="number" id="${p.id}-goals" value="${p.goals}"
+          Goals: <input disabled type="number" id="${p.id}-goals" value="${p.goals}"
             onchange="updatePlayer('${p.id}', 'goals', this.value)"><br>
-          X: <input type="number" id="${p.id}-x" value="${p.x}" step="0.1"
+          X: <input disabled type="number" id="${p.id}-x" value="${p.x}" step="0.1"
             onchange="updatePlayer('${p.id}', 'x', parseFloat(this.value))"><br>
-          Y: <input type="number" id="${p.id}-y" value="${p.y}" step="0.1"
+          Y: <input disabled type="number" id="${p.id}-y" value="${p.y}" step="0.1"
             onchange="updatePlayer('${p.id}', 'y', parseFloat(this.value))"><br>
-          Z: <input type="number" id="${p.id}-z" value="${p.z}" step="0.1"
+          Z: <input disabled type="number" id="${p.id}-z" value="${p.z}" step="0.1"
             onchange="updatePlayer('${p.id}', 'z', parseFloat(this.value))"><br>
          
         `;
