@@ -69,7 +69,7 @@ io.on("connection", (socket) => {
     players[socket.id] = newPlayer;
     newPlayer.name = data.name;
     newPlayer.team = data.team;
-    
+    console.log(orange,blue)
     if (data.team == "Orange") {orange[socket.id] = newPlayer;
                                newPlayer.x=-90*(Object.keys(orange).length)
                                }
@@ -165,11 +165,11 @@ io.emit('spherowner',{id:this.sphereOwner})
   // Handle disconnections
   socket.on("disconnect", () => {
     console.log(`Client disconnected: ${socket.id}`);
-    if (!players[socket.id]) return;
+    if (players[socket.id]) ;
     delete players[socket.id];
-    if (!orange[socket.id]) return;
+    if (orange[socket.id]) 
     delete orange[socket.id];
-    if (!blue[socket.id]) return;
+    if (blue[socket.id]) 
     delete blue[socket.id];
 
     // Notify other players to remove this player
