@@ -50,17 +50,28 @@
       color: #fff;
       width: 80px;
     }
-    button {
-      background: #333;
-      color: #eee;
+   button {
+      background-color: #333;
+      color: #f0f0f0;
+      border: 1px solid #444;
+      padding: 12px 24px;
+      font-size: 16px;
+      border-radius: 8px;
       cursor: pointer;
-      transition: background 0.3s;
-      font-weight:bolder;
-      
-      font-size:larger;
+      transition: all 0.2s ease;
     }
+
     button:hover {
-      background: #444;
+      background-color: #444;
+      border-color: #666;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    }
+
+    button:active {
+      background-color: #222;
+      border-color: #555;
+      box-shadow: none;
+      transform: translateY(1px);
     }
     strong {
       color: #00bcd4;
@@ -116,9 +127,7 @@
             onchange="updatePlayer('${p.id}', 'y', parseFloat(this.value))"><br>
           Z: <input type="number" id="${p.id}-z" value="${p.z}" step="0.1"
             onchange="updatePlayer('${p.id}', 'z', parseFloat(this.value))"><br>
-          <button onclick="incrementGoal('${p.id}')">+1 Goal</button>
-          <button onclick="resetPlayer('${p.id}')">Reset Pos</button>
-          <button onclick="deletePlayer('${p.id}')">❌</button>
+         
         `;
         playersEl.appendChild(li);
       }
