@@ -67,6 +67,14 @@ socket.on("restart", (data) => {
 this.sphereOwner = "";
   this.goalb = 0;
 this.goalo = 0;
+    let sc='N/A'
+    if (players[this.sphereOwner])
+ sc=players[this.sphereOwner].name
+      io.emit("scoreupdate", {
+        o: this.goalo,
+        b: this.goalb,
+        scorer: sc,
+      });
 })
   // Fired when the client is ready to initialize their Player object
   socket.on("initialize", (data) => {
