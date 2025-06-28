@@ -74,6 +74,7 @@ this.goalo = 0;
         o: this.goalo,
         b: this.goalb,
         scorer: sc,
+        now:true
       });
 })
   // Fired when the client is ready to initialize their Player object
