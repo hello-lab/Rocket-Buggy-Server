@@ -33,10 +33,7 @@
       gap: 15px;
     }
     li {
-      background: #1c1c1c;
-      padding: 15px;
-      border-radius: 8px;
-      box-shadow: 0 0 8px rgba(0,0,0,0.5);
+      
     }
     input, button {
       margin: 5px 0;
@@ -100,7 +97,7 @@
 
     socket.on('playerData', (data) => {
       renderPlayers(data.players);
-      console.log(data.players)
+     // console.log(data.players)
       //updateScore(data.players);
     });
 
@@ -114,8 +111,13 @@
       for (let id in players) {
         const p = players[id];
         const li = document.createElement('li');
-        li.innerHTML = `
         
+        let color=p.team=="Orange"?"orange":"#00bcd4"
+        li.innerHTML = `
+        <div style="border-left:solid ${color} ;background: #1c1c1c;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 0 8px rgba(0,0,0,0.5);">
           <strong>ID:</strong> ${p.id}<br>
           Name: <input disabled type="text" id="${p.id}-name" value="${p.name}" 
             onchange="updatePlayer('${p.id}', 'name', this.value)"><br>
@@ -129,7 +131,8 @@
             onchange="updatePlayer('${p.id}', 'y', parseFloat(this.value))"><br>
           Z: <input disabled type="number" id="${p.id}-z" value="${p.z}" step="0.1"
             onchange="updatePlayer('${p.id}', 'z', parseFloat(this.value))"><br>
-         
+  </div>
+
         `;
         playersEl.appendChild(li);
       }
