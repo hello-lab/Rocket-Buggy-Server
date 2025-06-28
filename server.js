@@ -128,11 +128,11 @@ this.goalo = 0;
 
   socket.on("score", (data) => {
     // console.log("fuke");
-    if (this.sphereOwner)
+  let sc=players[this.sphereOwner]?players[this.sphereOwner].name:'N/A'
       io.emit("scoreupdate", {
         o: this.goalo,
         b: this.goalb,
-        scorer: players[this.sphereOwner].name,
+        scorer: sc,
       });
   });
 
