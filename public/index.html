@@ -21,7 +21,7 @@
       margin-bottom: 20px;
       padding: 10px;
       background: #222;
-      border-radius: 6px;
+      border-radius: 10px;
       display: inline-block;
     }
     ul {
@@ -56,6 +56,9 @@
       border-radius: 8px;
       cursor: pointer;
       transition: all 0.2s ease;
+         box-shadow: white 0 0 5px 0px;
+  height: 10vh;
+    
     }
 
     button:hover {
@@ -82,16 +85,21 @@
 </head>
 <body>
   <h1>⚽ Live Player Manager</h1>
-  <div id="score"><strong style="color:orange">Orange: </strong> 0&nbsp;&nbsp;
+ <div style="background:#2d2e2d; padding:10px;border-radius:15px">
+ <div style="display:flex;justify-content: space-between;
+    align-items: center;">
+    <div id="score"><strong style="color:orange">Orange: </strong> 0&nbsp;&nbsp;
     <strong>Blue:</strong>0 <br><small>Last scorer: N/A</small></div>
-  <button onclick="restartlvl()">
+   <button onclick="restartlvl()">
     <text style="font-weight:bolder;color:#61f291">  Restart Level</text>
   </button>
    <button onclick="restartlvl()">
     <text style="font-weight:bolder;color:#f26172">Restart Game</text>
   </button>
+  </div>
+  
   <ul id="players"></ul>
-
+  </div>
   <script>
     const socket = io();
     const playersEl = document.getElementById('players');
