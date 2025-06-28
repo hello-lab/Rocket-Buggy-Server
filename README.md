@@ -1,44 +1,56 @@
-# Hello Node!
 
-This project includes a Node.js server script and a web page that connects to it. The front-end page presents a form the visitor can use to submit a color name, sending the submitted value to the back-end API running on the server. The server returns info to the page that allows it to update the display with the chosen color. 🎨
+# 📊 [Rocket Buggy](https://github.com/hello-lab/Rocket-Buggy) — Live Multiplayer Manager & Backend
 
-[Node.js](https://nodejs.org/en/about/) is a popular runtime that lets you run server-side JavaScript. This project uses the [Fastify](https://www.fastify.io/) framework and explores basic templating with [Handlebars](https://handlebarsjs.com/).
+A real-time multiplayer management dashboard and backend server for a web-based car soccer game.  
+Built with **Node.js**, **Express**, and **Socket.IO**, this project lets you track live players, teams, goals, and control match events like restarts and timers via a responsive browser UI.
 
-_Last updated: 14 August 2023_
+---
 
-## Prerequisites
+## 🖥️ Live Manager Screenshots
 
-You'll get best use out of this project if you're familiar with basic JavaScript. If you've written JavaScript for client-side web pages this is a little different because it uses server-side JS, but the syntax is the same!
+|Website Pic 1| Website Pic 2|
+|:------------|:------------|
+| ![Mp](https://github.com/user-attachments/assets/371c68cc-3cc3-49c4-8481-a27c96dda475) | ![Website](https://github.com/user-attachments/assets/f8431122-7f9e-44f2-bca2-0e5e1b57b213) |
 
-## What's in this project?
+---
 
-← `README.md`: That’s this file, where you can tell people what your cool website does and how you built it.
 
-← `public/style.css`: The styling rules for the pages in your site.
+## 📱 Mobile Views
 
-← `server.js`: The **Node.js** server script for your new site. The JavaScript defines the endpoints in the site back-end, one to return the homepage and one to update with the submitted color. Each one sends data to a Handlebars template which builds these parameter values into the web page the visitor sees.
+|Website Pic 1| Website Pic 2|
+|:------------|:------------|
+| ![Website Mobile](https://github.com/user-attachments/assets/83d36773-a11a-4ebd-b876-cfe8231b658b) | ![Gameplay Mobile](https://github.com/user-attachments/assets/317f3378-2e3f-4c91-8e7d-0bd54f0d1fc7) | 
 
-← `package.json`: The NPM packages for your project's dependencies.
+---
 
-← `src/`: This folder holds the site template along with some basic data files.
+## 📌 Features
 
-← `src/pages/index.hbs`: This is the main page template for your site. The template receives parameters from the server script, which it includes in the page HTML. The page sends the user submitted color value in the body of a request, or as a query parameter to choose a random color.
+- 📶 **Real-time multiplayer server** using **Socket.IO**
+- 📊 **Live Player Manager Web UI**:
+  - View connected player IDs, names, teams, and goals
+  - Reset the match timer
+  - Restart the entire match
+  - Display current team scores and last scorer
+- 📱 **Responsive for desktop and mobile**
+- 🔄 Live updates on player joins, disconnections, movements, sphere control, and goals
 
-← `src/colors.json`: A collection of CSS color names. We use this in the server script to pick a random color, and to match searches against color names.
+---
 
-← `src/seo.json`: When you're ready to share your new site or add a custom domain, change SEO/meta settings in here.
 
-## Try this next 🏗️
 
-Take a look in `TODO.md` for next steps you can try out in your new site!
 
-___Want a minimal version of this project to build your own Node.js app? Check out [Blank Node](https://glitch.com/edit/#!/remix/glitch-blank-node)!___
+## 📝 Tech Stack
 
-![Glitch](https://cdn.glitch.com/a9975ea6-8949-4bab-addb-8a95021dc2da%2FLogo_Color.svg?v=1602781328576)
+- **Node.js**
+- **Express**
+- **Socket.IO**
+- **HTML/CSS/Vanilla JS**
 
-## You built this with Glitch!
+---
 
-[Glitch](https://glitch.com) is a friendly community where millions of people come together to build web apps and websites.
+## 📖 Description
 
-- Need more help? [Check out our Help Center](https://help.glitch.com/) for answers to any common questions.
-- Ready to make it official? [Become a paid Glitch member](https://glitch.com/pricing) to boost your app with private sharing, more storage and memory, domains and more.
+A dedicated multiplayer server and live dashboard for monitoring and managing online car soccer matches in real time.  
+Players can join via the game, and match managers can view connected players, track scores, and control the match state live from a browser.
+
+---
