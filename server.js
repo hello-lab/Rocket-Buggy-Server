@@ -63,9 +63,7 @@ this.sphereOwner = "";
 io.on("connection", (socket) => {
   console.log(`New client connected: ${socket.id}`);
 socket.on("restart", (data) => {
-   players = {};
- orange = {};
- blue = {};
+   
 this.sphereOwner = "";
   this.goalb = 0;
 this.goalo = 0;

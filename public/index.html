@@ -175,7 +175,16 @@ function restartlvl(){
    socket.emit("restart")
 }
 
-    socket.on("scoreupdate", (data) => {
+    socket.on("scoreupdate1", (data) => {
+  // Display scores for both teams
+      console.log(data)
+  scoreEl.innerHTML = `
+    <strong style="color:orange;">Orange:</strong> ${data.o} &nbsp;&nbsp;
+    <strong>Blue:</strong> ${data.b} <br>
+    <small >Last scorer: ${data.scorer || "N/A"}</small>
+  `;
+});
+     socket.on("scoreupdate", (data) => {
   // Display scores for both teams
       console.log(data)
   scoreEl.innerHTML = `
