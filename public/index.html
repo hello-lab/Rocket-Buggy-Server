@@ -114,7 +114,7 @@
     document.body.onload = () => {
       console.log('web');
       socket.emit("web");
-      socket.emit("score")
+      socket.emit("score1")
     };
 
     socket.on('playerData', (data) => {
@@ -161,28 +161,11 @@
         playersEl.appendChild(li);
       }
     }
-` X: <input disabled type="number" id="${p.id}-x" value="${p.x}" step="0.1"
-            onchange="updatePlayer('${p.id}', 'x', parseFloat(this.value))"><br>
-          Y: <input disabled type="number" id="${p.id}-y" value="${p.y}" step="0.1"
-            onchange="updatePlayer('${p.id}', 'y', parseFloat(this.value))"><br>
-          Z: <input disabled type="number" id="${p.id}-z" value="${p.z}" step="0.1"
-            onchange="updatePlayer('${p.id}', 'z', parseFloat(this.value))"><br>`
-    function updatePlayer(id, key, value) {
-      socket.emit('editPlayer', { id, key, value });
-    }
 
-    function incrementGoal(id) {
-      const goalsInput = document.getElementById(`${id}-goals`);
-      const newVal = parseInt(goalsInput.value) + 1;
-      goalsInput.value = newVal;
-      updatePlayer(id, 'goals', newVal);
-    }
 
-    function resetPlayer(id) {
-      updatePlayer(id, 'x', 0);
-      updatePlayer(id, 'y', 0);
-      updatePlayer(id, 'z', 0);
-    }
+
+
+    
 function restartlvl(){
   console.log("noo")
    socket.emit("timer",{time:60*5})
@@ -194,6 +177,7 @@ function restartlvl(){
 
     socket.on("scoreupdate", (data) => {
   // Display scores for both teams
+      console.log(data)
   scoreEl.innerHTML = `
     <strong style="color:orange;">Orange:</strong> ${data.o} &nbsp;&nbsp;
     <strong>Blue:</strong> ${data.b} <br>

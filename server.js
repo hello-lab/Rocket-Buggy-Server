@@ -128,14 +128,26 @@ this.goalo = 0;
 
   socket.on("score", (data) => {
     // console.log("fuke");
-  let sc=players[this.sphereOwner]?players[this.sphereOwner].name:'N/A'
+     let sc='N/A'
+    if (players[this.sphereOwner])
+ sc=players[this.sphereOwner].name
       io.emit("scoreupdate", {
         o: this.goalo,
         b: this.goalb,
         scorer: sc,
       });
   });
-
+socket.on("score1", (data) => {
+    // console.log("fuke");
+     let sc='N/A'
+    if (players[this.sphereOwner])
+ sc=players[this.sphereOwner].name
+      io.emit("scoreupdate1", {
+        o: this.goalo,
+        b: this.goalb,
+        scorer: sc,
+      });
+  });
   socket.on("spherePositionUpdate", (data) => {
     //console.log(data.id,this.sphereOwner,data)
     if (data.id == this.sphereOwner)
