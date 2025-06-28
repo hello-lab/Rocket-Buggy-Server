@@ -73,14 +73,20 @@
     strong {
       color: #00bcd4;
     }
+    small{
+      
+    }
   </style>
 </head>
 <body>
   <h1>⚽ Live Player Manager</h1>
-  <div id="score"><strong style="color:orange">Orange:</strong> 0&nbsp;&nbsp;
-    <strong>Blue:</strong>0 <br></div>
+  <div id="score"><strong style="color:orange">Orange: </strong> 0&nbsp;&nbsp;
+    <strong>Blue:</strong>0 <br><small>Last scorer: N/A</small></div>
   <button onclick="restartlvl()">
-    Restart Level
+    <text style="font-weight:bolder;color:#61f291">  Restart Level</text>
+  </button>
+   <button onclick="restartlvl()">
+    <text style="font-weight:bolder;color:#f26172">Restart Game</text>
   </button>
   <ul id="players"></ul>
 
@@ -174,7 +180,7 @@ function restartlvl(){
   scoreEl.innerHTML = `
     <strong style="color:orange;">Orange:</strong> ${data.o} &nbsp;&nbsp;
     <strong>Blue:</strong> ${data.b} <br>
-    <small>Last scorer: ${data.scorer || "N/A"}</small>
+    <small >Last scorer: ${data.scorer || "N/A"}</small>
   `;
 });
   </script>
