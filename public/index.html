@@ -89,13 +89,16 @@
  <div style="display:flex;justify-content: space-between;
     align-items: center;">
     <div id="score"><strong style="color:orange">Orange: </strong> 0&nbsp;&nbsp;
-    <strong>Blue:</strong>0 <br><small>Last scorer: N/A</small></div>
+    <strong>Blue:</strong> 0 <br><small>Last scorer: N/A</small></div>
+   <div>
+     
+  
    <button onclick="restartlvl()">
     <text style="font-weight:bolder;color:#61f291">  Restart Level</text>
-  </button>
-   <button onclick="restartlvl()">
+  </button>&nbsp;&nbsp;
+   <button onclick="restartgm()">
     <text style="font-weight:bolder;color:#f26172">Restart Game</text>
-  </button>
+  </button> </div>
   </div>
   
   <ul id="players"></ul>
@@ -181,9 +184,10 @@ function restartlvl(){
   console.log("noo")
    socket.emit("timer",{time:60*5})
 }
-    function deletePlayer(id) {
-      socket.emit('removePlayer', { id });
-    }
+    function restartgm(){
+  console.log("noo")
+   socket.emit("restart")
+}
 
     socket.on("scoreupdate", (data) => {
   // Display scores for both teams

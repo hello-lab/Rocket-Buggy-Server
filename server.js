@@ -62,7 +62,14 @@ this.sphereOwner = "";
  */
 io.on("connection", (socket) => {
   console.log(`New client connected: ${socket.id}`);
-
+socket.on("restart", (data) => {
+   players = {};
+ orange = {};
+ blue = {};
+this.sphereOwner = "";
+  this.goalb = 0;
+this.goalo = 0;
+})
   // Fired when the client is ready to initialize their Player object
   socket.on("initialize", (data) => {
     const newPlayer = new Player(socket.id);
